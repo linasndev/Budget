@@ -45,7 +45,6 @@ struct SampleBudgetData {
   static var expenses: [Expense] {
     [
       Expense(name: "Bread", price: 4.60, quantity: 1)
-      
     ]
   }
 }

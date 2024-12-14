@@ -15,6 +15,25 @@ struct BudgetDetailView: View {
   @State private var expenseConfig = ExpenseConfig()
   @State private var isPresentedAddExpenses: Bool = false
   
+  //Filter expenses base on Budget
+  @Query private var expenses: [Expense] = []
+  
+  init(budget: Budget) {
+    self.budget = budget
+    
+    let budgetID = self.budget.persistentModelID
+    
+    let predicate = #Predicate<Expense> {
+      if let budget = $0.budget {
+        return budget.persistentModelID == budgetID
+      } else {
+        return false
+      }
+    }
+    
+    _expenses = Query(filter: predicate)
+  }
+  
   @Bindable var budget: Budget
   
   var body: some View {
@@ -57,14 +76,12 @@ struct BudgetDetailView: View {
       }
       
       Section("Expenses") {
-        if let expenses = budget.expenses {
           List {
             ForEach(expenses) { expense in
               ExpenseCellView(expense: expense)
             }
             .onDelete(perform: deleteExpense)
           }
-        }
       }
       .navigationTitle(budget.name)
       .navigationBarTitleDisplayMode(.inline)
@@ -120,12 +137,30 @@ struct ExpenseCellView: View {
   }
 }
 
-
+//MARK: - Preview 1 -
 #Preview("Preview", traits: .modifier(BudgetModelPreviewModifier())) {
   @Previewable @Query var budgets: [Budget]
   
   NavigationStack {
     BudgetDetailView(budget: budgets[0])
+  }
+}
+
+
+//MARK: - Preview 1 -
+struct BudgetDetailViewContainer: View {
+  
+  @Query(sort: \Budget.name, order: .forward) private var budgets: [Budget]
+  
+  var body: some View {
+    BudgetDetailView(budget: budgets[0])
+  }
+}
+
+#Preview("Second Preview") {
+  NavigationStack {
+    BudgetDetailViewContainer()
+      .modelContainer(previewContainer)
   }
 }
 
