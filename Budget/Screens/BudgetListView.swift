@@ -17,9 +17,12 @@ struct BudgetListView: View {
     NavigationStack {
       List {
         ForEach(budgets) { budget in
-          BudgetCellView(budget: budget)
+          NavigationLink(value: budget) {
+            BudgetCellView(budget: budget)
+          }
         }
       }
+      .accessibilityIdentifier("budgetCollentionView")
       .listStyle(.plain)
       .navigationTitle("Budgets")
       .toolbar {
@@ -27,10 +30,14 @@ struct BudgetListView: View {
           Button("Add Budget") {
             isPresentedAddBudgetSheet.toggle()
           }
+          .accessibilityIdentifier("addBudgetButton")
         }
       }
       .sheet(isPresented: $isPresentedAddBudgetSheet) {
         AddBudgetView()
+      }
+      .navigationDestination(for: Budget.self) { budget in
+        BudgetDetailView(budget: budget)
       }
     }
   }
@@ -39,7 +46,7 @@ struct BudgetListView: View {
 #Preview {
   NavigationStack {
     BudgetListView()
-      .modelContainer(for: Budget.self, inMemory: true)
+      .modelContainer(previewContainer)
   }
 }
 

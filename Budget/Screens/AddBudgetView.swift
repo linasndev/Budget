@@ -18,7 +18,11 @@ struct AddBudgetView: View {
   @State private var errorMessage: String = ""
   
   private var isFormValid: Bool {
-    return true
+    guard let limit = limit else {
+      return false
+    }
+    
+    return !name.isEmptyOrWhitespace && limit > 0
   }
   
   var body: some View {

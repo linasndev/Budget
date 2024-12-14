@@ -11,14 +11,16 @@ import SwiftData
 @Model
 class Budget {
   
-  var name: String
-  var limit: Double
+  var name: String = ""
+  var limit: Double = 0.0
+  @Relationship(deleteRule: .cascade, inverse: \Expense.budget) var expenses: [Expense]?
   
   init(name: String, limit: Double) {
     self.name = name
     self.limit = limit
   }
 }
+
 
 extension Budget {
   
@@ -34,6 +36,7 @@ extension Budget {
     return results.isEmpty
   }
   
+  
   func save(context: ModelContext) throws {
     if try !isUniqueName(context: context, name: name) {
       throw BudgetError.duplicateName
@@ -41,4 +44,6 @@ extension Budget {
     context.insert(self)
     try context.save()
   }
+  
+  
 }

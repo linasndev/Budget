@@ -10,6 +10,11 @@ import SwiftData
 
 @main
 struct BudgetApp: App {
+  
+  init() {
+    print(URL.applicationSupportDirectory.path(percentEncoded: false))
+  }
+  
   var body: some Scene {
     WindowGroup {
       BudgetListView()

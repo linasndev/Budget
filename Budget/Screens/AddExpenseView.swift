@@ -10,22 +10,23 @@ import SwiftData
 
 struct AddExpenseView: View {
   
+  @Environment(\.modelContext) private var modelContext
   @Environment(\.dismiss) private var dismiss
   @State private var expenseConfig = ExpenseConfig()
+  
+  let budget: Budget
   
   var body: some View {
     Form {
       Section("Add Expense") {
-        /*
          TextField("Expense name", text: $expenseConfig.name)
          TextField("Expense price", value: $expenseConfig.price, format: .number)
          TextField("Expense quantity", value: $expenseConfig.quantity, format: .number)
-         */
+         
         Button(action: {
           // save expenses
           if expenseConfig.isValid {
-            // save expenses
-            
+            saveExpense()
           }
         }, label: {
           Text("Save Expense")
@@ -33,10 +34,22 @@ struct AddExpenseView: View {
         })
         .buttonStyle(.borderedProminent)
         .listRowSeparator(.hidden)
-        
       }
     }
     .navigationTitle("Add Expense")
+  }
+  
+  private func saveExpense() {
+    do {
+      guard let price = expenseConfig.price else { return }
+      let newExpense = Expense(name: expenseConfig.name, price: price, quantity: expenseConfig.quantity)
+      //Add Expense to an existing budget
+      budget.expenses?.append(newExpense)
+      try modelContext.save()
+      dismiss()
+    } catch {
+      print(error.localizedDescription)
+    }
   }
 }
 
@@ -52,8 +65,10 @@ struct ExpenseConfig {
   }
 }
 
-#Preview {
+#Preview("Preview", traits: .modifier(BudgetModelPreviewModifier())) {
+  @Previewable @Query var budgets: [Budget]
+  
   NavigationStack {
-    AddExpenseView()
+    AddExpenseView(budget: budgets[0])
   }
 }

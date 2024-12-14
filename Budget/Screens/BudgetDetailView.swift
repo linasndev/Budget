@@ -6,64 +6,86 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct BudgetDetailView: View {
   
+  @Environment(\.modelContext) private var modelContext
+  
   @State private var expenseConfig = ExpenseConfig()
-  @State private var isPresented: Bool = false
+  @State private var isPresentedAddExpenses: Bool = false
+  
+  @Bindable var budget: Budget
   
   var body: some View {
     VStack {
-      
-      /*
-       Text("Budget Limit", format: .currency(code: Locale.currencyCode))
-       .frame(maxWidth: .infinity, alignment: .leading)
-       .padding()
-       .font(.headline)
-       */
+      HStack {
+        Text("Limit Budget: ")
+        Text(budget.limit, format: .currency(code: Locale.currencyCode))
+      }
       
       Form {
         Section("Budget") {
-          //TextField("Budget name", text: $budget.name)
-          //TextField("Budget limit", value: $budget.limit, format: .currency(code: Locale.currencyCode))
+          
+          TextField("New Budget name", text: $budget.name)
+          TextField("New Budget limit", value: $budget.limit, format: .currency(code: Locale.currencyCode))
+          
+          
+          Button("Add Expenses") {
+            isPresentedAddExpenses.toggle()
+          }
         }
         
         Section("Expenses") {
-          Text("Display Budget Expenses")
+          if let expenses = budget.expenses {
+            List {
+              ForEach(expenses) { expense in
+                ExpenseCellView(expense: expense)
+              }
+            }
+          }
         }
-        
-      }.navigationTitle("Budget Name")
-    }
-    .toolbar {
-      ToolbarItem(placement: .topBarTrailing) {
-        Button("Add Expense") {
-          isPresented = true
+        .navigationTitle(budget.name)
+        .navigationBarTitleDisplayMode(.inline)
+      }
+      .toolbar {
+        ToolbarItem(placement: .topBarTrailing) {
+          Button("Update") {
+            do {
+              try modelContext.save()
+            } catch {
+              print(error.localizedDescription)
+            }
+          }
         }
       }
-    }
-    .sheet(isPresented: $isPresented) {
-      Text("AddExpense")
+      .sheet(isPresented: $isPresentedAddExpenses) {
+        AddExpenseView(budget: budget)
+      }
     }
   }
 }
-
-/*
-struct ExpenseCellView: View {
+  
+  
+  struct ExpenseCellView: View {
     
     let expense: Expense
     
     var body: some View {
-        HStack {
-            Text("\(Text(expense.name)) (\(expense.quantity))")
-            Spacer()
-            Text(expense.total, format: .currency(code: Locale.currencyCode))
-        }
+      HStack {
+        Text("\(Text(expense.name)) (\(expense.quantity))")
+        Spacer()
+        Text(expense.total, format: .currency(code: Locale.currencyCode))
+      }
     }
-}
-*/
+  }
 
-#Preview {
+
+#Preview("Preview", traits: .modifier(BudgetModelPreviewModifier())) {
+  @Previewable @Query var budgets: [Budget]
+  
   NavigationStack {
-    BudgetDetailView()
+    BudgetDetailView(budget: budgets[0])
   }
 }
+
