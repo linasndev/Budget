@@ -15,9 +15,10 @@ class Budget {
   var limit: Double = 0.0
   @Relationship(deleteRule: .cascade, inverse: \Expense.budget) var expenses: [Expense]?
   
-  init(name: String, limit: Double) {
+  init(name: String, limit: Double, expenses: [Expense]? = nil) {
     self.name = name
     self.limit = limit
+    self.expenses = expenses
   }
 }
 
