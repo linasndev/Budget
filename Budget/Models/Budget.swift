@@ -36,7 +36,6 @@ extension Budget {
     return results.isEmpty
   }
   
-  
   func save(context: ModelContext) throws {
     if try !isUniqueName(context: context, name: name) {
       throw BudgetError.duplicateName
@@ -45,5 +44,13 @@ extension Budget {
     try context.save()
   }
   
+  var spentExpenses: Double {
+    expenses?.reduce(0) { price, expense in
+      price + (expense.price * Double(expense.quantity))
+    } ?? 0.0
+  }
   
+  var remainBudget: Double {
+    limit - spentExpenses
+  }
 }

@@ -23,6 +23,16 @@
 		1F197C3C2D0DBE9000EDC253 /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F197C3B2D0DBE9000EDC253 /* Expense.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		1F197C452D0E0E4B00EDC253 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1F197BFF2D0D552E00EDC253 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1F197C062D0D552E00EDC253;
+			remoteInfo = Budget;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		1F197C072D0D552E00EDC253 /* Budget.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Budget.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F197C182D0D553700EDC253 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -39,10 +49,18 @@
 		1F197C372D0D956000EDC253 /* Budget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Budget.swift; sourceTree = "<group>"; };
 		1F197C392D0DBC7900EDC253 /* PreviewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewContainer.swift; sourceTree = "<group>"; };
 		1F197C3B2D0DBE9000EDC253 /* Expense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
+		1F197C412D0E0E4B00EDC253 /* BudgetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BudgetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		1F197C042D0D552E00EDC253 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1F197C3E2D0E0E4B00EDC253 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -64,6 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				1F197C072D0D552E00EDC253 /* Budget.app */,
+				1F197C412D0E0E4B00EDC253 /* BudgetTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -159,6 +178,26 @@
 			productReference = 1F197C072D0D552E00EDC253 /* Budget.app */;
 			productType = "com.apple.product-type.application";
 		};
+		1F197C402D0E0E4B00EDC253 /* BudgetTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1F197C492D0E0E4B00EDC253 /* Build configuration list for PBXNativeTarget "BudgetTests" */;
+			buildPhases = (
+				1F197C3D2D0E0E4B00EDC253 /* Sources */,
+				1F197C3E2D0E0E4B00EDC253 /* Frameworks */,
+				1F197C3F2D0E0E4B00EDC253 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1F197C462D0E0E4B00EDC253 /* PBXTargetDependency */,
+			);
+			name = BudgetTests;
+			packageProductDependencies = (
+			);
+			productName = BudgetTests;
+			productReference = 1F197C412D0E0E4B00EDC253 /* BudgetTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -171,6 +210,10 @@
 				TargetAttributes = {
 					1F197C062D0D552E00EDC253 = {
 						CreatedOnToolsVersion = 16.2;
+					};
+					1F197C402D0E0E4B00EDC253 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 1F197C062D0D552E00EDC253;
 					};
 				};
 			};
@@ -189,6 +232,7 @@
 			projectRoot = "";
 			targets = (
 				1F197C062D0D552E00EDC253 /* Budget */,
+				1F197C402D0E0E4B00EDC253 /* BudgetTests */,
 			);
 		};
 /* End PBXProject section */
@@ -200,6 +244,13 @@
 			files = (
 				1F197C202D0D553700EDC253 /* Preview Assets.xcassets in Resources */,
 				1F197C212D0D553700EDC253 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1F197C3F2D0E0E4B00EDC253 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -225,7 +276,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1F197C3D2D0E0E4B00EDC253 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1F197C462D0E0E4B00EDC253 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1F197C062D0D552E00EDC253 /* Budget */;
+			targetProxy = 1F197C452D0E0E4B00EDC253 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1F197C132D0D552E00EDC253 /* Debug */ = {
@@ -405,6 +471,42 @@
 			};
 			name = Release;
 		};
+		1F197C472D0E0E4B00EDC253 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 95H4F25F77;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = linasdev.net.BudgetTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Budget.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Budget";
+			};
+			name = Debug;
+		};
+		1F197C482D0E0E4B00EDC253 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 95H4F25F77;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = linasdev.net.BudgetTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Budget.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Budget";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -422,6 +524,15 @@
 			buildConfigurations = (
 				1F197C162D0D552E00EDC253 /* Debug */,
 				1F197C172D0D552E00EDC253 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1F197C492D0E0E4B00EDC253 /* Build configuration list for PBXNativeTarget "BudgetTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1F197C472D0E0E4B00EDC253 /* Debug */,
+				1F197C482D0E0E4B00EDC253 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

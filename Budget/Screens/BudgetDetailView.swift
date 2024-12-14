@@ -18,67 +18,107 @@ struct BudgetDetailView: View {
   @Bindable var budget: Budget
   
   var body: some View {
-    VStack {
-      HStack {
-        Text("Limit Budget: ")
-        Text(budget.limit, format: .currency(code: Locale.currencyCode))
+    Form {
+      Section("Info Budget") {
+        VStack(alignment: .leading) {
+          HStack(spacing: 1) {
+            Text("Budget Limit: ")
+            Text(budget.limit, format: .currency(code: Locale.currencyCode))
+              .fontWeight(.bold)
+          }
+          .font(.footnote)
+          
+          HStack(spacing: 1) {
+            Text("Budget Spent: ")
+            Text(budget.spentExpenses, format: .currency(code: Locale.currencyCode))
+              .fontWeight(.bold)
+              .foregroundStyle(insufficientFundsColor)
+          }
+          .font(.footnote)
+          
+          HStack(spacing: 1) {
+            Text("Budget Remain: ")
+            Text(budget.remainBudget, format: .currency(code: Locale.currencyCode))
+              .fontWeight(.bold)
+              .foregroundStyle(insufficientFundsColor)
+          }
+          .font(.footnote)
+        }
       }
       
-      Form {
-        Section("Budget") {
-          
-          TextField("New Budget name", text: $budget.name)
-          TextField("New Budget limit", value: $budget.limit, format: .currency(code: Locale.currencyCode))
-          
-          
-          Button("Add Expenses") {
-            isPresentedAddExpenses.toggle()
-          }
+      Section("Budget") {
+        TextField("New Budget name", text: $budget.name)
+        TextField("New Budget limit", value: $budget.limit, format: .currency(code: Locale.currencyCode))
+        Button("Add Expenses") {
+          isPresentedAddExpenses.toggle()
         }
+        .disabled(budget.remainBudget < 0)
         
-        Section("Expenses") {
-          if let expenses = budget.expenses {
-            List {
-              ForEach(expenses) { expense in
-                ExpenseCellView(expense: expense)
-              }
-            }
-          }
-        }
-        .navigationTitle(budget.name)
-        .navigationBarTitleDisplayMode(.inline)
       }
-      .toolbar {
-        ToolbarItem(placement: .topBarTrailing) {
-          Button("Update") {
-            do {
-              try modelContext.save()
-            } catch {
-              print(error.localizedDescription)
+      
+      Section("Expenses") {
+        if let expenses = budget.expenses {
+          List {
+            ForEach(expenses) { expense in
+              ExpenseCellView(expense: expense)
             }
+            .onDelete(perform: deleteExpense)
           }
         }
       }
-      .sheet(isPresented: $isPresentedAddExpenses) {
-        AddExpenseView(budget: budget)
+      .navigationTitle(budget.name)
+      .navigationBarTitleDisplayMode(.inline)
+    }
+    .toolbar {
+      ToolbarItem(placement: .topBarTrailing) {
+        Button("Update") {
+          do {
+            try modelContext.save()
+          } catch {
+            print(error.localizedDescription)
+          }
+        }
       }
+    }
+    .sheet(isPresented: $isPresentedAddExpenses) {
+      AddExpenseView(budget: budget)
+    }
+  }
+  
+  private var insufficientFundsColor: Color {
+    budget.remainBudget < 0 ? .red : .primary
+  }
+  
+  private func deleteExpense(offsets: IndexSet) {
+    guard let expenses = budget.expenses else { return } // Exit if expenses is nil
+    
+    for index in offsets.sorted(by: >) {
+      let expenseToDelete = expenses[index]
+      budget.expenses?.remove(at: index)
+      modelContext.delete(expenseToDelete)
+    }
+    
+    do {
+      try modelContext.save()
+    } catch {
+      print("❌ NOT DELETE")
     }
   }
 }
+
+
+struct ExpenseCellView: View {
   
+  let expense: Expense
   
-  struct ExpenseCellView: View {
-    
-    let expense: Expense
-    
-    var body: some View {
-      HStack {
-        Text("\(Text(expense.name)) (\(expense.quantity))")
-        Spacer()
-        Text(expense.total, format: .currency(code: Locale.currencyCode))
-      }
+  var body: some View {
+    HStack {
+      Text("\(Text(expense.name)) (\(expense.quantity))")
+      Spacer()
+      Text(expense.total, format: .currency(code: Locale.currencyCode))
     }
   }
+}
 
 
 #Preview("Preview", traits: .modifier(BudgetModelPreviewModifier())) {
